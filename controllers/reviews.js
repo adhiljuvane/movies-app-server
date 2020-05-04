@@ -7,7 +7,7 @@ exports.getAllReviews = (req, res) => {
   try {
     Review.find({ movieId: req.body.movieId }).exec((err, reviews) => {
       if (err) return res.status(400).json({ success: false, err: err });
-      return res.status(200).json({ success: true, reviews: reviews });
+      res.status(200).json({ success: true, reviews: reviews });
     });
   } catch (err) {
     return res.status(500).json({
@@ -26,7 +26,7 @@ exports.writeReview = (req, res) => {
 
     review.save((err, doc) => {
       if (err) return res.status(400).json({ success: false, err: err });
-      return res.status(200).json({ success: true, doc: doc });
+      res.status(200).json({ success: true, doc: doc });
     });
   } catch (err) {
     return res.status(500).json({
@@ -43,7 +43,7 @@ exports.getAllUser = (req, res) => {
   try {
     Review.find({ userFrom: req.body.userFrom }).exec((err, reviews) => {
       if (err) return res.status(400).json({ success: false, err: err });
-      return res.status(200).json({ success: true, reviews: reviews });
+      res.status(200).json({ success: true, reviews: reviews });
     });
   } catch (err) {
     return res.status(500).json({
