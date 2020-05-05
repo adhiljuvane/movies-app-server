@@ -6,6 +6,7 @@ const {
   logoutUser,
   getUser,
   getUserById,
+  getAll,
 } = require("../controllers/users");
 const { auth } = require("../middlewares/auth");
 
@@ -23,6 +24,10 @@ router.get("/logout", auth, (req, res) => {
 
 router.get("/auth", auth, (req, res) => {
   getUser(req, res);
+});
+
+router.post("/getAll", auth, (req, res) => {
+  getAll(req, res);
 });
 
 router.post("/user", auth, (req, res) => {

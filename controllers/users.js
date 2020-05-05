@@ -75,8 +75,6 @@ exports.loginUser = async (req, res) => {
         }
 
         user.generateToken((err, user) => {
-          console.log("users", user);
-          console.log("eww", err);
           if (err) return res.status(400).send(err);
           res.cookie("w_authExp", user.tokenExp);
           res.cookie("w_auth", user.token);
@@ -123,11 +121,27 @@ exports.logoutUser = async (req, res) => {
 //@route GET /api/users/user
 //@access private
 exports.getUserById = async (req, res) => {
-  console.log("id", req.body);
   try {
     User.findById(req.body.id).exec((err, user) => {
       if (err) return res.status(400).json({ success: false, err: err });
       return res.status(200).json({ success: true, user: user });
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      error: "Server error",
+    });
+  }
+};
+
+//@desc get all users (for friends page).
+//@route GET /api/users/getAll
+//@access private
+exports.getAll = async (req, res) => {
+  try {
+    User.find({ _id: { $ne: req.body.id } }).exec((err, users) => {
+      if (err) return res.status(400).json({ success: false, err: err });
+      return res.status(200).json({ success: true, users: users });
     });
   } catch (err) {
     return res.status(500).json({
