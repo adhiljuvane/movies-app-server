@@ -1,6 +1,7 @@
 const { User } = require("../models/User");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+var _ = require("lodash");
 
 //@desc to get details of the user.
 //@route GET /api/users/auth
@@ -195,19 +196,54 @@ exports.sendRequest = async (req, res) => {
   }
 };
 
-// //@desc get all friendRequests (for friends page).
-// //@route GET /api/users/getRequests
-// //@access private
-// exports.getAll = async (req, res) => {
-//   try {
-//     User.findById(req.body.id).exec((err , user) => {
-//       if(err) return res.status(400).json({ success : false , err : "User not found"})
-//       return res.status(200).json({ success : true , user : user})
-//     })
-//   } catch (err) {
-//     return res.status(500).json({
-//       success: false,
-//       error: "Server error",
-//     });
-//   }
-// };
+//@desc accept friend request (for friends page).
+//@route POST /api/users/acceptRequest
+//@access private
+exports.acceptRequest = async (req, res) => {
+  try {
+    const options = {
+      new: true,
+      upsert: true,
+      runValidators: true,
+    };
+
+    User.findById(req.body.userFrom).exec((err, user) => {
+      if (err)
+        return res
+          .status(400)
+          .json({ success: "false", err: "User not found" });
+      if (user) {
+        var requests = user.friendRequests;
+        var accepted = user.friends ? user.friends : [];
+        requestRemaining = _.dropWhile(requests, [
+          "requestFrom",
+          req.body.userTo,
+        ]);
+        // console.log("requestremaining", requestRemaining);
+        // console.log("requests", requests);
+        accepted = _.filter(requests, ["requestFrom", req.body.userTo]);
+        // console.log("accepted", accepted);
+        User.findByIdAndUpdate(
+          req.body.userFrom,
+          {
+            friendRequests: requestRemaining,
+            friends: accepted,
+          },
+          options,
+          (err, doc) => {
+            if (err)
+              return res
+                .status(400)
+                .json({ success: false, err: "couldnt update" });
+            return res.status(200).json({ success: true, doc: doc });
+          }
+        );
+      }
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      error: err,
+    });
+  }
+};

@@ -37,6 +37,9 @@ const UserSchema = new mongoose.Schema(
     friendRequests: {
       type: [Object],
     },
+    friends: {
+      type: [Object],
+    },
   },
   {
     writeConcern: {

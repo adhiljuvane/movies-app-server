@@ -8,6 +8,7 @@ const {
   getUserById,
   getAll,
   sendRequest,
+  acceptRequest,
 } = require("../controllers/users");
 const { auth } = require("../middlewares/auth");
 
@@ -37,6 +38,10 @@ router.post("/user", auth, (req, res) => {
 
 router.post("/sendRequest", auth, (req, res) => {
   sendRequest(req, res);
+});
+
+router.post("/acceptRequest", auth, (req, res) => {
+  acceptRequest(req, res);
 });
 
 module.exports = router;
