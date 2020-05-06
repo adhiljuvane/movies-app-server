@@ -34,6 +34,9 @@ const UserSchema = new mongoose.Schema(
     tokenExp: {
       type: Number,
     },
+    friendRequests: {
+      type: [Object],
+    },
   },
   {
     writeConcern: {

@@ -7,6 +7,7 @@ const {
   getUser,
   getUserById,
   getAll,
+  sendRequest,
 } = require("../controllers/users");
 const { auth } = require("../middlewares/auth");
 
@@ -32,6 +33,10 @@ router.post("/getAll", auth, (req, res) => {
 
 router.post("/user", auth, (req, res) => {
   getUserById(req, res);
+});
+
+router.post("/sendRequest", auth, (req, res) => {
+  sendRequest(req, res);
 });
 
 module.exports = router;

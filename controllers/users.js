@@ -150,3 +150,47 @@ exports.getAll = async (req, res) => {
     });
   }
 };
+
+//@desc send request (for friends page).
+//@route POST /api/users/sendRequest
+//@access private
+exports.sendRequest = async (req, res) => {
+  try {
+    const options = {
+      new: true,
+      upsert: true,
+      runValidators: true,
+    };
+
+    User.findById(req.body.userTo).exec((err, user) => {
+      if (err)
+        return res.status(400).json({ success: false, err: "User not found" });
+      if (user) {
+        let requests = user.friendRequests ? user.friendRequests : [];
+        const request = {
+          requestFrom: req.body.userFrom,
+          time: req.body.time,
+        };
+        requests = [...requests, request];
+        console.log("requests", requests);
+        User.findByIdAndUpdate(
+          req.body.userTo,
+          { friendRequests: requests },
+          options,
+          (err, doc) => {
+            if (err)
+              return res
+                .status(400)
+                .json({ success: false, err: "couldnt update" });
+            return res.status(200).json({ success: true, doc: doc });
+          }
+        );
+      }
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      error: err,
+    });
+  }
+};
