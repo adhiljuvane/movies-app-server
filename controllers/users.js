@@ -228,11 +228,11 @@ exports.acceptRequest = async (req, res) => {
         // console.log("requests", requests);
         var accepted = _.filter(requests, ["requestFrom", req.body.userTo]); //62
         var acceptedForTo = JSON.parse(JSON.stringify(accepted));
-        console.log("acceptedForTo", acceptedForTo);
-        console.log("accepted", accepted);
+        // console.log("acceptedForTo", acceptedForTo);
+        // console.log("accepted", accepted);
         acceptedForTo[0].requestFrom = req.body.userFrom; //62->cb
-        console.log("acceptedForTo", acceptedForTo);
-        console.log("accepted", accepted);
+        // console.log("acceptedForTo", acceptedForTo);
+        // console.log("accepted", accepted);
         friends = _.concat(friends, accepted);
         // console.log("accepted", accepted);
         User.findByIdAndUpdate(
@@ -288,11 +288,12 @@ exports.acceptRequest = async (req, res) => {
 exports.unFriend = async (req, res) => {
   try {
     User.findById(req.body.userFrom).exec((err, user) => {
+      //62
       if (err)
         return res.status(400).json({ success: false, err: "No user found" });
       if (user) {
         let friends = user.friends;
-        friends = _.dropWhile(friends, ["requestFrom", req.body.userTo]);
+        friends = _.dropWhile(friends, ["requestFrom", req.body.userTo]); //cb
         user.friends = friends;
         user.save((err, doc) => {
           if (err)
@@ -302,13 +303,14 @@ exports.unFriend = async (req, res) => {
           // return res.status(200).json({ success: true, user: user });
           if (doc) {
             User.findById(req.body.userTo).exec((err, userTo) => {
+              //cb
               if (err)
                 return res.status(400).json({ success: false, err: err });
               if (userTo) {
                 var friendsTo = userTo.friends ? userTo.friends : [];
                 friendsTo = _.dropWhile(friendsTo, [
                   "requestFrom",
-                  req.body.userTo,
+                  req.body.userFrom,
                 ]);
                 userTo.friends = friendsTo;
                 userTo.save((err, docTo) => {
@@ -319,6 +321,35 @@ exports.unFriend = async (req, res) => {
               }
             });
           }
+        });
+      }
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      error: "Server error",
+    });
+  }
+};
+
+//@desc reject a friend request (for friends page).
+//@route GET /api/users/rejectRequest
+//@access private
+exports.rejectRequest = async (req, res) => {
+  try {
+    User.findById(req.body.userFrom).exec((err, user) => {
+      if (err)
+        return res.status(400).json({ success: false, err: "User not found" });
+      if (user) {
+        let requests = JSON.parse(JSON.stringify(user.friendRequests));
+        requests = _.dropWhile(requests, ["requestFrom", req.body.userTo]);
+        user.friendRequests = requests;
+        user.save((err, doc) => {
+          if (err)
+            return res
+              .status(400)
+              .json({ success: false, err: "Could not save" });
+          return res.status(200).json({ success: true, doc: doc });
         });
       }
     });
