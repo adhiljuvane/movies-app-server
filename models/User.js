@@ -41,6 +41,9 @@ const UserSchema = new mongoose.Schema(
     friends: {
       type: [Object],
     },
+    pendingRequests: {
+      type: [Object],
+    },
   },
   {
     writeConcern: {
