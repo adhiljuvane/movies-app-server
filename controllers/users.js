@@ -1,5 +1,6 @@
 const { User } = require("../models/User");
 const bcrypt = require("bcrypt");
+var mongoose = require("mongoose");
 const saltRounds = 10;
 var _ = require("lodash");
 
@@ -155,6 +156,7 @@ exports.getAll = async (req, res) => {
 //@desc send request (for friends page).
 //@route POST /api/users/sendRequest
 //@access private
+//all done.
 exports.sendRequest = async (req, res) => {
   const options = {
     new: true,
@@ -195,20 +197,26 @@ exports.sendRequest = async (req, res) => {
 //   userFrom: localStorage.getItem("userId"),cb
 //   userTo: user._id,62
 // };
+//done
 exports.acceptRequest = async (req, res) => {
   const options = {
     new: true,
     upsert: true,
     runValidators: true,
   };
-  //cb
-  User.findByIdAndUpdate(
+
+  // var userFrom = mongoose.mongo.ObjectID(req.body.userFrom);
+  // var userTo = mongoose.mongo.ObjectID(req.body.userTo);
+
+  //moving user from friendRequests to friends of userFrom
+
+  await User.findByIdAndUpdate(
     req.body.userFrom,
     {
       $pull: {
-        friendRequests: { $elemMatch: { requestFrom: req.body.userTo } },
+        friendRequests: { user: req.body.userTo },
       },
-      $push: { friends: { requestFrom: req.body.userTo } },
+      $addToSet: { friends: { user: req.body.userTo } },
     },
     options,
     (err, doc) => {
@@ -217,9 +225,15 @@ exports.acceptRequest = async (req, res) => {
     }
   );
 
+  //moving user from pendongRequests to friends of userTo
   User.findByIdAndUpdate(
     req.body.userTo,
-    { $push: { friends: { requestFrom: req.body.userFrom } } },
+    {
+      $pull: {
+        pendingRequests: { user: req.body.userFrom },
+      },
+      $addToSet: { friends: { user: req.body.userFrom } },
+    },
     options,
     (err, doc) => {
       if (err) return res.status(400).json({ success: false, err: err });
@@ -245,7 +259,7 @@ exports.unFriend = async (req, res) => {
 
   User.findOneAndUpdate(
     req.body.userFrom,
-    { $pull: { friends: { requestFrom: req.body.userTo } } },
+    { $pull: { friends: { user: req.body.userTo } } },
     options,
     (err, doc) => {
       if (err) return res.status(400).json({ success: false, err: err });
@@ -255,7 +269,7 @@ exports.unFriend = async (req, res) => {
 
   User.findByIdAndUpdate(
     req.body.userTo,
-    { $pull: { friends: { requestFrom: req.body.userFrom } } },
+    { $pull: { friends: { user: req.body.userFrom } } },
     options,
     (err, doc) => {
       if (err) return res.status(400).json({ success: false, err: err });

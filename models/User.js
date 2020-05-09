@@ -51,6 +51,7 @@ const UserSchema = new mongoose.Schema(
       j: true,
       wtimeout: 1000,
     },
+    skipVersioning: { dontVersionMe: true },
   }
 );
 
