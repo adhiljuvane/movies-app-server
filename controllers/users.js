@@ -285,51 +285,37 @@ exports.acceptRequest = async (req, res) => {
 //@desc unfriend a user (for friends page).
 //@route GET /api/users/unfriend
 //@access private
+// const unFriend = (user) => {
+//   const data = {
+//     userFrom: localStorage.getItem("userId"),
+//     userTo: user._id,
+//   };
 exports.unFriend = async (req, res) => {
-  try {
-    User.findById(req.body.userFrom).exec((err, user) => {
-      //62
-      if (err)
-        return res.status(400).json({ success: false, err: "No user found" });
-      if (user) {
-        let friends = user.friends;
-        friends = _.dropWhile(friends, ["requestFrom", req.body.userTo]); //cb
-        user.friends = friends;
-        user.save((err, doc) => {
-          if (err)
-            return res
-              .status(400)
-              .json({ success: false, err: "UnFriend Error" });
-          // return res.status(200).json({ success: true, user: user });
-          if (doc) {
-            User.findById(req.body.userTo).exec((err, userTo) => {
-              //cb
-              if (err)
-                return res.status(400).json({ success: false, err: err });
-              if (userTo) {
-                var friendsTo = userTo.friends ? userTo.friends : [];
-                friendsTo = _.dropWhile(friendsTo, [
-                  "requestFrom",
-                  req.body.userFrom,
-                ]);
-                userTo.friends = friendsTo;
-                userTo.save((err, docTo) => {
-                  if (err)
-                    return res.status(400).json({ success: false, err: err });
-                  return res.status(200).json({ success: true, doc: docTo });
-                });
-              }
-            });
-          }
-        });
-      }
-    });
-  } catch (err) {
-    return res.status(500).json({
-      success: false,
-      error: "Server error",
-    });
-  }
+  const options = {
+    new: true,
+    upsert: true,
+    runValidators: true,
+  };
+
+  User.findOneAndUpdate(
+    req.body.userFrom,
+    { $pull: { friends: { requestFrom: req.body.userTo } } },
+    options,
+    (err, doc) => {
+      if (err) return res.status(400).json({ success: false, err: err });
+      console.log("dovc saved", doc);
+    }
+  );
+
+  User.findByIdAndUpdate(
+    req.body.userTo,
+    { $pull: { friends: { requestFrom: req.body.userFrom } } },
+    options,
+    (err, doc) => {
+      if (err) return res.status(400).json({ success: false, err: err });
+      return res.status(200).json({ success: true, doc: doc });
+    }
+  );
 };
 
 //@desc reject a friend request (for friends page).
