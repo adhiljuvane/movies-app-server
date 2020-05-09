@@ -250,6 +250,7 @@ exports.acceptRequest = async (req, res) => {
 //     userFrom: localStorage.getItem("userId"),
 //     userTo: user._id,
 //   };
+//done
 exports.unFriend = async (req, res) => {
   const options = {
     new: true,
@@ -257,13 +258,15 @@ exports.unFriend = async (req, res) => {
     runValidators: true,
   };
 
+  var doc1 = {};
+
   User.findOneAndUpdate(
     req.body.userFrom,
     { $pull: { friends: { user: req.body.userTo } } },
     options,
     (err, doc) => {
       if (err) return res.status(400).json({ success: false, err: err });
-      console.log("dovc saved", doc);
+      doc1 = doc;
     }
   );
 
@@ -273,7 +276,7 @@ exports.unFriend = async (req, res) => {
     options,
     (err, doc) => {
       if (err) return res.status(400).json({ success: false, err: err });
-      return res.status(200).json({ success: true, doc: doc });
+      return res.status(200).json({ success: true, doc1: doc1, doc2: doc });
     }
   );
 };
@@ -281,28 +284,36 @@ exports.unFriend = async (req, res) => {
 //@desc reject a friend request (for friends page).
 //@route GET /api/users/rejectRequest
 //@access private
+//done
 exports.rejectRequest = async (req, res) => {
-  try {
-    User.findById(req.body.userFrom).exec((err, user) => {
-      if (err)
-        return res.status(400).json({ success: false, err: "User not found" });
-      if (user) {
-        let requests = JSON.parse(JSON.stringify(user.friendRequests));
-        requests = _.dropWhile(requests, ["requestFrom", req.body.userTo]);
-        user.friendRequests = requests;
-        user.save((err, doc) => {
-          if (err)
-            return res
-              .status(400)
-              .json({ success: false, err: "Could not save" });
-          return res.status(200).json({ success: true, doc: doc });
-        });
-      }
-    });
-  } catch (err) {
-    return res.status(500).json({
-      success: false,
-      error: "Server error",
-    });
-  }
+  const options = {
+    new: true,
+    upsert: true,
+    runValidators: true,
+  };
+
+  var doc1 = {};
+  //Removing request from friendRequests of userFrom
+
+  await User.findByIdAndUpdate(
+    req.body.userFrom,
+    { $pull: { friendRequests: { user: req.body.userTo } } },
+    options,
+    (err, doc) => {
+      if (err) return res.status(400).json({ success: false, err: err });
+      doc1 = doc;
+    }
+  );
+
+  //Removing request from pendingRequests of userTo
+
+  User.findByIdAndUpdate(
+    req.body.userTo,
+    { $pull: { pendingRequests: { user: req.body.userFrom } } },
+    options,
+    (err, doc) => {
+      if (err) return res.status(400).json({ success: false, err: err });
+      return res.status(200).json({ success: true, doc1: doc1, doc2: doc });
+    }
+  );
 };
