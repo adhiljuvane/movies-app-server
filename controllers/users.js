@@ -99,24 +99,21 @@ exports.loginUser = async (req, res) => {
 //@route GET /api/users/logout
 //@access private
 exports.logoutUser = async (req, res) => {
-  try {
-    User.findOneAndUpdate(
-      { _id: req.user._id },
-      { token: "", tokenExp: "" },
-      (err, doc) => {
-        if (err) return res.json({ success: false, error: err });
-        return res.status(200).json({
-          success: true,
-          data: doc,
-        });
-      }
-    );
-  } catch (err) {
-    return res.status(500).json({
-      success: false,
-      error: "Server error",
-    });
-  }
+  const options = {
+    new: true,
+    upsert: true,
+    runValidators: true,
+  };
+
+  User.findByIdAndUpdate(
+    req.user._id,
+    { $set: { token: "", tokenExp: "" } },
+    options,
+    (err, doc) => {
+      if (err) return res.status(400).json({ success: false, error: err });
+      return res.status(200).json({ success: true, data: doc });
+    }
+  );
 };
 
 //@desc get anther user by id.
@@ -260,7 +257,7 @@ exports.unFriend = async (req, res) => {
 
   var doc1 = {};
 
-  User.findOneAndUpdate(
+  await User.findByIdAndUpdate(
     req.body.userFrom,
     { $pull: { friends: { user: req.body.userTo } } },
     options,
@@ -282,7 +279,7 @@ exports.unFriend = async (req, res) => {
 };
 
 //@desc reject a friend request (for friends page).
-//@route GET /api/users/rejectRequest
+//@route POST /api/users/rejectRequest
 //@access private
 //done
 exports.rejectRequest = async (req, res) => {
@@ -310,6 +307,43 @@ exports.rejectRequest = async (req, res) => {
   User.findByIdAndUpdate(
     req.body.userTo,
     { $pull: { pendingRequests: { user: req.body.userFrom } } },
+    options,
+    (err, doc) => {
+      if (err) return res.status(400).json({ success: false, err: err });
+      return res.status(200).json({ success: true, doc1: doc1, doc2: doc });
+    }
+  );
+};
+
+//@desc cancel a pendng Request (for friends page).
+//@route POST /api/users/cancelRequest
+//@access private
+//done
+exports.cancelRequest = async (req, res) => {
+  const options = {
+    new: true,
+    upsert: true,
+    runValidators: true,
+  };
+
+  var doc1 = {};
+  //Removing request from friendRequests of userFrom
+
+  await User.findByIdAndUpdate(
+    req.body.userFrom,
+    { $pull: { pendingRequests: { user: req.body.userTo } } },
+    options,
+    (err, doc) => {
+      if (err) return res.status(400).json({ success: false, err: err });
+      doc1 = doc;
+    }
+  );
+
+  //Removing request from pendingRequests of userTo
+
+  User.findByIdAndUpdate(
+    req.body.userTo,
+    { $pull: { friendRequests: { user: req.body.userFrom } } },
     options,
     (err, doc) => {
       if (err) return res.status(400).json({ success: false, err: err });

@@ -11,6 +11,7 @@ const {
   acceptRequest,
   unFriend,
   rejectRequest,
+  cancelRequest,
 } = require("../controllers/users");
 const { auth } = require("../middlewares/auth");
 
@@ -52,6 +53,10 @@ router.post("/unFriend", auth, (req, res) => {
 
 router.post("/rejectRequest", auth, (req, res) => {
   rejectRequest(req, res);
+});
+
+router.post("/cancelRequest", auth, (req, res) => {
+  cancelRequest(req, res);
 });
 
 module.exports = router;
