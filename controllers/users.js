@@ -202,6 +202,8 @@ exports.acceptRequest = async (req, res) => {
     runValidators: true,
   };
 
+  var doc1 = {};
+
   // var userFrom = mongoose.mongo.ObjectID(req.body.userFrom);
   // var userTo = mongoose.mongo.ObjectID(req.body.userTo);
 
@@ -234,7 +236,7 @@ exports.acceptRequest = async (req, res) => {
     options,
     (err, doc) => {
       if (err) return res.status(400).json({ success: false, err: err });
-      return res.status(200).json({ success: true, doc: doc });
+      return res.status(200).json({ success: true, doc1: doc1, doc2: doc });
     }
   );
 };
