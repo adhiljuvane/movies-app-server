@@ -1,4 +1,5 @@
 const { Review } = require("../models/Review");
+const { User } = require("../models/User");
 
 //@desc to get all reviews of a movie.
 //@route POST /api/reviews/getAll
@@ -51,4 +52,84 @@ exports.getAllUser = (req, res) => {
       err: err,
     });
   }
+};
+
+//@desc to like a review
+//@route POST /api/reviews/likeOne
+//access private
+// const data = {
+//   userFrom: localStorage.getItem("userId"),
+//   movieId: props.movieId,
+//   likedReview: props.reviewId,
+// };
+exports.likeOne = async (req, res) => {
+  const options = {
+    new: true,
+    upsert: true,
+    runValidators: true,
+  };
+
+  var doc1 = {};
+
+  await Review.findByIdAndUpdate(
+    req.body.likedReview,
+    { $addToSet: { likedBy: { user: req.body.userFrom } } },
+    options,
+    (err, doc) => {
+      if (err) return res.status(400).json({ success: true, err: err });
+      // return res.status(200).json({ success: true, doc: doc });
+      doc1 = doc;
+    }
+  );
+
+  User.findByIdAndUpdate(
+    req.body.userFrom,
+    { $addToSet: { likedReviews: { review: req.body.likedReview } } },
+    options,
+    (err, doc) => {
+      if (err) return res.status(400).json({ success: false, err: errr });
+      return res.status(200).json({ success: true, doc1: doc1, doc2: doc });
+    }
+  );
+};
+
+//@desc to dislike a review
+//@route POST /api/reviews/likeOne
+//access private
+// const data = {
+//   userFrom: localStorage.getItem("userId"),
+//   movieId: props.movieId,
+//   likedReview: props.reviewId,
+// };
+exports.dislikeOne = async (req, res) => {
+  const options = {
+    new: true,
+    upsert: true,
+    runValidators: true,
+  };
+
+  var doc1 = {};
+
+  await Review.findByIdAndUpdate(
+    req.body.likedReview,
+    {
+      $addToSet: { dislikedBy: { user: req.body.userFrom } },
+    },
+    options,
+    (err, doc) => {
+      if (err) return res.status(400).json({ success: true, err: err });
+      // return res.status(200).json({ success: true, doc: doc });
+      doc1 = doc;
+    }
+  );
+
+  User.findByIdAndUpdate(
+    req.body.userFrom,
+    { $addToSet: { dislikedReviews: { review: req.body.likedReview } } },
+    options,
+    (err, doc) => {
+      if (err) return res.status(400).json({ success: false, err: errr });
+      return res.status(200).json({ success: true, doc1: doc1, doc2: doc });
+    }
+  );
 };

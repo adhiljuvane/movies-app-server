@@ -13,6 +13,12 @@ const ReviewSchema = new mongoose.Schema(
     review: {
       type: String,
     },
+    likedBy: {
+      type: [Object],
+    },
+    dislikedBy: {
+      type: [Object],
+    },
   },
   {
     writeConcern: {

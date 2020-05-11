@@ -44,6 +44,9 @@ const UserSchema = new mongoose.Schema(
     pendingRequests: {
       type: [Object],
     },
+    likedReviews: {
+      type: [Object],
+    },
   },
   {
     writeConcern: {
