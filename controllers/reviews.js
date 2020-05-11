@@ -1,5 +1,6 @@
 const { Review } = require("../models/Review");
 const { User } = require("../models/User");
+var _ = require("lodash");
 
 //@desc to get all reviews of a movie.
 //@route POST /api/reviews/getAll
@@ -132,4 +133,35 @@ exports.dislikeOne = async (req, res) => {
       return res.status(200).json({ success: true, doc1: doc1, doc2: doc });
     }
   );
+};
+
+//@desc to get if current user liked the review.
+//@route POST /api/reviews/isLiked
+//access private
+// const reviewData = {
+//   userFrom: localStorage.getItem("userId"),
+//   movieId: props.movieId,
+//   reviewId: props.reviewId,
+// };
+exports.getLiked = async (req, res) => {
+  Review.findById(req.body.reviewId, (err, doc) => {
+    if (err) return res.status(400).json({ success: false, err: err });
+    if (doc) {
+      let liked = _.find(doc.likedBy, { user: req.body.userFrom });
+      let disliked = _.find(doc.dislikedBy, { user: req.body.userFrom });
+      if (liked !== undefined) {
+        return res
+          .status(200)
+          .json({ success: true, doc: doc, liked: true, disliked: false });
+      } else if (disliked !== undefined) {
+        return res
+          .status(200)
+          .json({ success: true, doc: doc, liked: false, disliked: true });
+      } else {
+        return res
+          .status(200)
+          .json({ success: true, doc: doc, liked: false, disliked: false });
+      }
+    }
+  });
 };

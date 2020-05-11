@@ -7,6 +7,7 @@ const {
   getAllUser,
   likeOne,
   dislikeOne,
+  getLiked,
 } = require("../controllers/reviews");
 
 router.post("/getAll", auth, (req, res) => {
@@ -27,6 +28,10 @@ router.post("/likeOne", auth, (req, res) => {
 
 router.post("/dislikeOne", auth, (req, res) => {
   dislikeOne(req, res);
+});
+
+router.post("/getLiked", auth, (req, res) => {
+  getLiked(req, res);
 });
 
 module.exports = router;
