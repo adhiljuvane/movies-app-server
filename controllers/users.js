@@ -1,6 +1,5 @@
 const { User } = require("../models/User");
 const bcrypt = require("bcrypt");
-var mongoose = require("mongoose");
 const saltRounds = 10;
 var _ = require("lodash");
 
@@ -8,6 +7,7 @@ var _ = require("lodash");
 //@route GET /api/users/auth
 //access private
 exports.getUser = (req, res) => {
+  console.log("req", req.body, "res", res);
   try {
     return res.status(200).json({
       _id: req.user._id,
@@ -220,7 +220,7 @@ exports.acceptRequest = async (req, res) => {
     options,
     (err, doc) => {
       if (err) return res.status(400).json({ success: false, err: err });
-      console.log("doc", doc);
+      doc1 = doc;
     }
   );
 

@@ -5,6 +5,11 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const cookieParser = require("cookie-parser");
 
+var whitelist = [
+  "http://localhost:3000",
+  "https://warm-wildwood-35115.herokuapp.com",
+];
+
 const corsOptions = {
   allowedHeaders: [
     "Origin",
@@ -16,7 +21,13 @@ const corsOptions = {
   ],
   credentials: true,
   methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
-  origin: "http://localhost:3000",
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   preflightContinue: false,
 };
 
