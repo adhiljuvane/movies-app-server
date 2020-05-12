@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 
 var whitelist = [
   "http://localhost:3000",
+  "https://carpe-diem-movies.surge.sh",
   "https://warm-wildwood-35115.herokuapp.com",
 ];
 
