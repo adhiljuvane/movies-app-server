@@ -1,0 +1,70 @@
+@import '~antd/dist/antd.css';
+
+.header {
+  background-color: #24252A;
+  width: 100%;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: #edf0f1;
+  top: 0;
+  height: 80px;
+  position: fixed;
+  z-index: 20;
+  display: flex;
+  opacity: 80%;
+  flex-direction: row;
+}
+
+.header .logo {
+  width: 20%;
+  display: flex;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: #edf0f1;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.header .menu {
+  display: flex;
+  width: 80%;
+  flex-direction: row;
+  justify-content: space-between;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: #edf0f1;
+}
+
+.normal-button {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: #edf0f1;
+  padding: 9px 25px;
+}
+
+.sign-in-button {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: #edf0f1;
+  padding: 9px 25px;
+  background-color: rgb(0, 136, 169, 1);
+  border: none;
+  margin: 5px;
+  border-radius: 50px;
+}
+
+.sign-in-button:hover {
+  transition: 0.5s ease 0s;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 16px;
+  color: #0088a9;
+  background-color: #edf0f1;
+}
