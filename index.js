@@ -35,10 +35,10 @@ const corsOptions = {
 };
 
 const app = express();
-app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(cors(corsOptions));
 
 dotenv.config({ path: "./config/config.env" });
 
