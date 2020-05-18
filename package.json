@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-client": "cd client && npm run build",
     "install-client": "cd client && npm install",
-    "heroku-postbuild": "npm run install-client && npm run build-client",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
     "start": "nodemon index",
     "backend": "nodemon server/index.js",
     "dev": "concurrently \"npm run backend\" \"npm run start --prefix client\""
