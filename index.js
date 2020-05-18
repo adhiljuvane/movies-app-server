@@ -22,13 +22,14 @@ const corsOptions = {
   ],
   credentials: true,
   methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  // origin: function (origin, callback) {
+  //   if (whitelist.indexOf(origin) !== -1) {
+  //     callback(null, true);
+  //   } else {
+  //     callback(new Error("Not allowed by CORS"));
+  //   }
+  // },
+  origin: true,
   preflightContinue: false,
 };
 
@@ -51,6 +52,10 @@ app.use("/api/reviews", require("./routes/reviews"));
 app.get("/", (req, res) => {
   res.status(200).send("<h3>Hello there!!</h3>");
 });
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("/client/build"));
+}
 
 app.listen(PORT, () => {
   console.log("Server running on PORT 5000");
