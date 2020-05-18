@@ -1,9 +1,9 @@
-@import '~antd/dist/antd.css';
+@import "~antd/dist/antd.css";
 
 .header {
-  background-color: #24252A;
+  background-color: #24252a;
   width: 100%;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 500;
   font-size: 16px;
   color: #edf0f1;
@@ -12,14 +12,13 @@
   position: fixed;
   z-index: 20;
   display: flex;
-  opacity: 80%;
   flex-direction: row;
 }
 
 .header .logo {
   width: 20%;
   display: flex;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 500;
   font-size: 16px;
   color: #edf0f1;
@@ -33,14 +32,14 @@
   width: 80%;
   flex-direction: row;
   justify-content: space-between;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 500;
   font-size: 16px;
   color: #edf0f1;
 }
 
 .normal-button {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 500;
   font-size: 16px;
   color: #edf0f1;
@@ -48,7 +47,7 @@
 }
 
 .sign-in-button {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 500;
   font-size: 16px;
   color: #edf0f1;
@@ -61,7 +60,7 @@
 
 .sign-in-button:hover {
   transition: 0.5s ease 0s;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 500;
   cursor: pointer;
   font-size: 16px;
