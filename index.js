@@ -51,12 +51,9 @@ app.use("/api/users", require("./routes/users"));
 app.use("/api/favourite", require("./routes/favourites"));
 app.use("/api/reviews", require("./routes/reviews"));
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "/client/build")));
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "/client/build", "index.html"));
-  });
-}
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "/client/build", "index.html"));
+});
 
 // if (process.env.NODE_ENV === "production") {
 //   app.use(express.static("client/build"));
