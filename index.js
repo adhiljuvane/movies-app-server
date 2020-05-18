@@ -45,6 +45,8 @@ const PORT = process.env.PORT || 5000;
 
 connectDB();
 
+app.use("/", express.static(path.join(__dirname, "/client/build")));
+
 app.use("/api/users", require("./routes/users"));
 app.use("/api/favourite", require("./routes/favourites"));
 app.use("/api/reviews", require("./routes/reviews"));
