@@ -50,7 +50,7 @@ app.use("/api/favourite", require("./routes/favourites"));
 app.use("/api/reviews", require("./routes/reviews"));
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static("/client/build"));
+  app.use(express.static("client/build"));
 }
 
 app.listen(PORT, () => {
