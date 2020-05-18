@@ -49,10 +49,6 @@ app.use("/api/users", require("./routes/users"));
 app.use("/api/favourite", require("./routes/favourites"));
 app.use("/api/reviews", require("./routes/reviews"));
 
-app.get("/", (req, res) => {
-  res.status(200).send("<h3>Hello there!!</h3>");
-});
-
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("/client/build"));
 }
