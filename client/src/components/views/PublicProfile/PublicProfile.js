@@ -89,7 +89,6 @@ function PublicProfile(props) {
           style={{
             width: "100%",
             overflowX: "scroll",
-            height: "30vh",
             display: "flex",
             flexDirection: "row",
           }}
@@ -136,7 +135,6 @@ function PublicProfile(props) {
           style={{
             width: "100%",
             overflowX: "scroll",
-            height: "30vh",
             display: "flex",
             flexDirection: "row",
           }}
@@ -150,6 +148,7 @@ function PublicProfile(props) {
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
+                      margin: "10px",
                       color: "white",
                     }}
                   >

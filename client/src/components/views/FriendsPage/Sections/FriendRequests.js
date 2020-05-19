@@ -21,7 +21,6 @@ const FriendRequests = (props) => {
     axios.post(`${USER_SERVER}/acceptRequest`, requestData).then((response) => {
       if (response.data.doc1 && response.data.doc2) {
         message.success("Friend Request Accepted");
-        props.getRequests();
       }
     });
   };

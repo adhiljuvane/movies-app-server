@@ -33,13 +33,13 @@ function App() {
           <Route
             exact
             path="/favourite"
-            component={Auth(FavouritePage, null)}
+            component={Auth(FavouritePage, true)}
           />
-          <Route exact path="/friends" component={Auth(FriendsPage, null)} />
+          <Route exact path="/friends" component={Auth(FriendsPage, true)} />
           <Route
             exact
             path="/profile/:id"
-            component={Auth(PublicProfile, null)}
+            component={Auth(PublicProfile, true)}
           />
         </Switch>
       </div>

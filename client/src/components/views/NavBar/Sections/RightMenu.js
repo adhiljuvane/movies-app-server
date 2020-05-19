@@ -23,7 +23,6 @@ function RightMenu(props) {
   if (user.userData && !user.userData.isAuth) {
     return (
       <div
-        mode={props.mode}
         style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
       >
         <div>
@@ -41,7 +40,6 @@ function RightMenu(props) {
   } else {
     return (
       <div
-        mode={props.mode}
         style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
       >
         <div>
