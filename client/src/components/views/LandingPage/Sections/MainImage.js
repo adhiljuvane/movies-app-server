@@ -1,9 +1,14 @@
 import React from "react";
 import { Typography } from "antd";
+import { FiSearch } from "react-icons/fi";
 
 const { Title } = Typography;
 
 function MainImage(props) {
+  const handleChange = (e) => {
+    props.handleSearch(e);
+  };
+
   return (
     <div
       style={{
@@ -29,6 +34,33 @@ function MainImage(props) {
             {props.title}
           </Title>
           <p style={{ color: "white", fontSize: "1rem" }}>{props.text}</p>
+        </div>
+        <div
+          style={{
+            color: "#edf0f1",
+            borderRadius: "20px",
+            border: "1px solid #edf0f1",
+            backgroundColor: "#24252a",
+            padding: "5px",
+            position: "absolute",
+            right: "2rem",
+            top: "6rem",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <FiSearch style={{ fontSize: "20px", fontWeight: "200" }} />
+          <input
+            onChange={handleChange}
+            placeholder="Search Movies"
+            style={{
+              backgroundColor: "#24252a",
+              border: "none",
+              paddingLeft: "10px",
+            }}
+          />
         </div>
       </div>
     </div>

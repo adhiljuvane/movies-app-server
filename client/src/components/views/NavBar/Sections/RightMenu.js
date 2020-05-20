@@ -2,7 +2,6 @@
 import React from "react";
 import axios from "axios";
 import { message } from "antd";
-import { FiSearch } from "react-icons/fi";
 import { withRouter, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -26,17 +25,6 @@ function RightMenu(props) {
       <div
         style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
       >
-        <div className="searchbar">
-          <FiSearch style={{ fontSize: "20px", fontWeight: "200" }} />
-          <input
-            placeholder="Search Movies"
-            style={{
-              backgroundColor: "#24252a",
-              border: "none",
-              paddingLeft: "10px",
-            }}
-          />
-        </div>
         <div>
           <Link to="/login" className="sign-in-button">
             Sign In
@@ -54,17 +42,6 @@ function RightMenu(props) {
       <div
         style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
       >
-        <div className="searchbar">
-          <FiSearch style={{ fontSize: "20px", fontWeight: "200" }} />
-          <input
-            placeholder="Search Movies"
-            style={{
-              backgroundColor: "#24252a",
-              border: "none",
-              paddingLeft: "10px",
-            }}
-          />
-        </div>
         <div>
           <Link onClick={logoutHandler} className="sign-in-button">
             Logout
