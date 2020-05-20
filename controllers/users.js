@@ -359,8 +359,8 @@ exports.contactMe = async (req, res) => {
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "adhiljuvane@gmail.com",
-      pass: "Dhilbarroshan@123456",
+      user: "*************",
+      pass: "***********",
     },
   });
 
