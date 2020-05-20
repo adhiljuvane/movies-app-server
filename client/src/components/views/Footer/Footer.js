@@ -1,7 +1,32 @@
-import React from "react";
-import { Input } from "antd";
+import React, { useState } from "react";
+import { Input, message } from "antd";
+import { USER_SERVER } from "../../Config";
+import axios from "axios";
+
+const { TextArea } = Input;
 
 function Footer() {
+  const [Email, setEmail] = useState("");
+  const [Content, setContent] = useState("");
+
+  const onContact = () => {
+    console.log("email", Email);
+    console.log("Content", Content);
+    const data = {
+      email: Email,
+      content: Content,
+    };
+    axios.post(`${USER_SERVER}/contactMe`, data).then((response) => {
+      if (response.data.success) {
+        setEmail("");
+        setContent("");
+        message.success("Email Sent.");
+      } else {
+        message.warning("Could not contact");
+      }
+    });
+  };
+
   return (
     <div
       style={{
@@ -39,37 +64,47 @@ function Footer() {
           height: "100%",
           color: "#edf0f1",
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "row",
           justifyContent: "center",
           alignItems: "center",
-          paddingLeft: "30px",
         }}
       >
         <div
           style={{
             display: "flex",
-            flexDirection: "row",
-            width: "90%",
-            justifyContent: "space between",
-            justifyContent: "center",
+            flexDirection: "column",
+            width: "60%",
+            height: "inherit",
+            justifyContent: "space-evenly",
             alignItems: "center",
           }}
         >
           <Input
             placeholder="Leave e-mail here.. "
+            onChange={(e) => setEmail(e.target.value)}
             style={{
-              width: "40%",
+              width: "90%",
               borderRadius: "10px",
-              height: "80%",
               marginInline: "20px",
             }}
           />
-          <div
-            className="sign-in-button"
-            style={{ backgroundColor: "rgb(36, 37, 42)" }}
-          >
-            Subscribe
-          </div>
+          <TextArea
+            onChange={(e) => setContent(e.target.value)}
+            style={{
+              width: "90%",
+              borderRadius: "10px",
+              marginInline: "20px",
+            }}
+            rows={4}
+            placeholder="I would love to know what you think."
+          />
+        </div>
+        <div
+          className="sign-in-button"
+          style={{ backgroundColor: "rgb(36, 37, 42)" }}
+          onClick={onContact}
+        >
+          Contact Me.
         </div>
       </div>
     </div>

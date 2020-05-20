@@ -75,7 +75,7 @@ const LandingPage = () => {
       {Movies[1] && (
         <MainImage
           handleSearch={(e) => handleSearch(e)}
-          image={`${IMAGE_URL}w1280${Movies[1].backdrop_path}`}
+          image={`${IMAGE_URL}w1280${Movies[0].backdrop_path}`}
           title={Movies[0].original_title}
           text={Movies[0].overview}
         />

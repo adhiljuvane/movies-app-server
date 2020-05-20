@@ -1,5 +1,6 @@
 const { User } = require("../models/User");
 const bcrypt = require("bcrypt");
+var nodemailer = require("nodemailer");
 const saltRounds = 10;
 var _ = require("lodash");
 
@@ -352,4 +353,29 @@ exports.cancelRequest = async (req, res) => {
       return res.status(200).json({ success: true, doc1: doc1, doc2: doc });
     }
   );
+};
+
+exports.contactMe = async (req, res) => {
+  var transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "adhiljuvane@gmail.com",
+      pass: "Dhilbarroshan@123456",
+    },
+  });
+
+  var mailOptions = {
+    from: "adhiljuvane@gmail.com",
+    to: "adhilmp3@gmail.com",
+    subject: "Carpe Diem Contact Message",
+    text: `${req.body.email} has sent a messsage from carpe diem. The message is ${req.body.content}`,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      return res.status(400).json({ success: false, err: error });
+    } else {
+      return res.status(200).json({ success: true, message: "EMAIL SENT!!" });
+    }
+  });
 };
