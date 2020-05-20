@@ -1,6 +1,7 @@
 .card {
   box-shadow: rgba(1, 1, 1, 0.06) 0px 2px 4px;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  height: auto;
 }
 
 .card:hover {

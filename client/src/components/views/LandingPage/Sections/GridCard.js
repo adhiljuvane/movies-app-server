@@ -9,7 +9,7 @@ function GridCard(props) {
       <Col lg={6} md={8} sm={12} xs={24}>
         <div style={{ position: "relative" }} className="card">
           <img
-            style={{ width: "100%", height: "320px", borderRadius: "5%" }}
+            style={{ width: "100%", height: "100%", borderRadius: "5%" }}
             alt=""
             src={props.image}
           />
@@ -40,7 +40,12 @@ function GridCard(props) {
         <div style={{ position: "relative" }} className="card">
           <Link to={`/movie/${props.movieId}`}>
             <img
-              style={{ width: "100%", height: "320px" }}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                marginInline: "auto",
+              }}
               alt=""
               src={props.image}
             />

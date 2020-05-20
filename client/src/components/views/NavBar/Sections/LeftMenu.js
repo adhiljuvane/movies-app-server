@@ -29,7 +29,7 @@ function LeftMenu() {
         </div>
         <div>
           <Link to="/friends" className="normal-button">
-            Freinds
+            Friends
           </Link>
         </div>
       </div>

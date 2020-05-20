@@ -41,7 +41,7 @@ const WriteReview = (props) => {
       }}
     >
       <TextArea
-        placeholder="writeyour review...."
+        placeholder="What do you think about the movie...."
         rows={3}
         disabled={written}
         value={Review}

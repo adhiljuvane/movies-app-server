@@ -17,7 +17,6 @@ const LandingPage = () => {
     fetch(path)
       .then((response) => response.json())
       .then((response) => {
-        console.log("fetch latest", response);
         setMovies([...Movies, ...response.results]);
         setCurrentPage(response.page);
       });
